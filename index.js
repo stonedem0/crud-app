@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path')
 const keys = require('./config/keys');
+const authRoutes = require('./routes/auth_routes');
+const passportSetup = require('./config/passport');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI, {useNewUrlParser: true});
@@ -15,6 +17,8 @@ db.once('open', () => {
 const app = express();
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'));
+
+app.use('/auth', authRoutes);
 
 app.get('/', async(req, res) => {
     res.render('home.pug')
