@@ -6,12 +6,12 @@ const keys = require('./keys')
 
 const User = require('../models/User')
 
-passport.serializeUser( (user, done) => {
+passport.serializeUser((user, done) => {
     console.log("user:", user)
     done(null, user);
 });
 
-passport.deserializeUser( (user, done) => {
+passport.deserializeUser((user, done) => {
     done(null, user);
 });
 
@@ -36,8 +36,7 @@ passport.use(new FacebookStrategy({
     clientID: keys.facebookAppID,
     clientSecret: keys.facebookAppSecret,
     callbackURL: 'auth/facebook/callback'
-  },
-  async (accessToken, refreshToken, profile, cb) =>{
+}, async(accessToken, refreshToken, profile, cb) => {
     try {
         const existingUser = await User.findOne({googleId: profile.id});
         if (existingUser) {
@@ -48,5 +47,4 @@ passport.use(new FacebookStrategy({
     } catch (err) {
         done(err, null);
     }
-  }
-));
+}));
