@@ -21,7 +21,19 @@ router.get('/logout', (req, res) => {
 })
 
 router.get('/google/callback', passport.authenticate('google'), (req, res) =>{ 
-    res.send('you reached the callback uri ')
+    res.render('profile.pug',{user: req.user.displayName} )
 })
+
+
+router.get('/facebook',
+  passport.authenticate('facebook'));
+
+router.get('/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    console.log("facebook", req.user)  
+    res.render('profile.pug')
+  });
+
 
 module.exports = router;
