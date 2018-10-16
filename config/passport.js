@@ -1,6 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
+const GitHubStrategy = require('passport-github').Strategy;
 const mongoose = require('mongoose');
 const keys = require('./keys')
 
@@ -18,11 +19,12 @@ passport.deserializeUser((id, done) => {
         });
 });
 
+// Google strategy
+//--------------->
 passport.use(new GoogleStrategy({
-    clientID: keys.googleClientID,
-    clientSecret: keys.googleClientSecret,
-    callbackURL: '/auth/google/redirect',
-
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL
 }, async(accessToken, refreshToken, profile, done) => {
     try {
         const existingUser = await User.findOne({googleId: profile.id});
@@ -36,10 +38,14 @@ passport.use(new GoogleStrategy({
     }
 }))
 
+
+//Facebook strategy 
+//---------------->
+
 passport.use(new FacebookStrategy({
-    clientID: keys.facebookAppID,
-    clientSecret: keys.facebookAppSecret,
-    callbackURL: '/auth/facebook/callback',
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: process.env.FACEBOOK_CALLBACK_URL,
     profileFields:['id','displayName','emails']
 }, async(accessToken, refreshToken, profile, done) => {
     console.log(profile)
@@ -56,3 +62,5 @@ passport.use(new FacebookStrategy({
     }
 }));
 
+//Gitub strategy 
+//------------->

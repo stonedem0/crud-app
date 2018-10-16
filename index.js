@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const path = require('path')
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
-const keys = require('./config/keys');
+// const keys = require('./config/keys');
 const authRoutes = require('./routes/auth_routes');
 const passport = require('passport');
 
@@ -11,10 +11,9 @@ require('dotenv').config()
 
 require('./config/passport');
 
-console.log(`dotenv magic ${process.env.SECRET_KEY}`)
 
 mongoose.Promise = global.Promise;
-mongoose.connect(keys.mongoURI, {useNewUrlParser: true});
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -29,7 +28,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.json());
 app.use(cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: [keys.cookieKey]
+    keys: [process.env.COOKIE_KEY]
 }));
 
 app.use(passport.initialize());
