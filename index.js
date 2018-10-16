@@ -5,9 +5,13 @@ const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const keys = require('./config/keys');
 const authRoutes = require('./routes/auth_routes');
-const passportSetup = require('./config/passport');
 const passport = require('passport');
 
+require('dotenv').config()
+
+require('./config/passport');
+
+console.log(`dotenv magic ${process.env.SECRET_KEY}`)
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI, {useNewUrlParser: true});
@@ -38,10 +42,9 @@ app.get('/', async(req, res) => {
 })
 
 app.get('/profile', async(req, res) => {
-    res.render('profile.pug', {user: req.user.displayName})
+    console.log(`render ${req.user}`)
+    res.render('profile.pug', {user: req.user.name})
 })
-
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

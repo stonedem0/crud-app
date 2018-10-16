@@ -44,13 +44,13 @@ passport.use(new FacebookStrategy({
 }, async(accessToken, refreshToken, profile, done) => {
     console.log(profile)
     try {
-        const existingUser = await User.findOne({});
+        const existingUser = await User.findOne({email:profile.emails[0].value});
         if (existingUser) {
             return done(null, existingUser);
         }
-        const user = await new User({email:profile.emails[0].value,
-			name:profile.displayName}).save();
+        const user = await new User({email:profile.emails[0].value,name:profile.displayName}).save();        
         done(null, user);
+        console.log(`db ${user}`)
     } catch (err) {
         done(err, null);
     }

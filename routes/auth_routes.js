@@ -32,7 +32,7 @@ router.get('/facebook',
 router.get('/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
-    console.log("facebook", req.user)  
+    // console.log("facebook", req.user)  
     res.redirect('/profile');
   });
 
