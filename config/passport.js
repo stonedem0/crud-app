@@ -19,6 +19,7 @@ passport.deserializeUser((id, done) => {
         });
 });
 
+
 // Google strategy --------------->
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -27,11 +28,12 @@ passport.use(new GoogleStrategy({
 }, async(accessToken, refreshToken, profile, done) => {
     console.log(profile)
     try {
-        const existingUser = await User.findOne({ googleId: profile.id });
+        const existingUser = await User.findOne({user_id: profile.id});
         if (existingUser) {
+            console.log(profile.id)
             return done(null, existingUser);
         }
-        const user = await new User({googleId: profile.id, displayName: profile.displayName}).save();
+        const user = await new User({user_id: profile.id, displayName: profile.displayName}).save();
         done(null, user);
     } catch (err) {
         done(err, null);
@@ -46,13 +48,13 @@ passport.use(new FacebookStrategy({
     callbackURL: process.env.FACEBOOK_CALLBACK_URL,
     profileFields: ['id', 'displayName', 'emails']
 }, async(accessToken, refreshToken, profile, done) => {
-    console.log(profile)
+    console.log("facebook", profile)
     try {
-        const existingUser = await User.findOne({id: profile.id});
+        const existingUser = await User.findOne({user_id: profile.id});
         if (existingUser) {
             return done(null, existingUser);
         }
-        const user = await new User({id: profile.id, name: profile.displayName}).save();
+        const user = await new User({user_id: profile.id, displayName: profile.displayName}).save();
         done(null, user);
         console.log(`db ${user}`)
     } catch (err) {
@@ -61,4 +63,21 @@ passport.use(new FacebookStrategy({
 }));
 
 //Gitub strategy ------------->
-
+passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: process.env.GITHUB_CALLBACK_URL
+}, async(accessToken, refreshToken, profile, done) => {
+    console.log("facebook", profile)
+    try {
+        const existingUser = await User.findOne({user_id: profile.id});
+        if (existingUser) {
+            return done(null, existingUser);
+        }
+        const user = await new User({user_id: profile.id, displayName: profile.displayName}).save();
+        done(null, user);
+        console.log(`db ${user}`)
+    } catch (err) {
+        done(err, null);
+    }
+}));

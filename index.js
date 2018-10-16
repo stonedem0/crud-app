@@ -42,7 +42,7 @@ app.get('/', async(req, res) => {
 
 app.get('/profile', async(req, res) => {
     console.log(`render ${req.user}`)
-    res.render('profile.pug', {user: req.user.name})
+    res.render('profile.pug', {user: req.user.displayName})
 })
 
 const PORT = process.env.PORT || 5000;
