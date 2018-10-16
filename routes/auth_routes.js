@@ -27,13 +27,13 @@ router.get('/google/redirect', passport.authenticate('google'), (req, res) =>{
 // console.trace("here i am")
 
 router.get('/facebook',
-  passport.authenticate('facebook'));
+  passport.authenticate('facebook', {scope:"email"}));
 
 router.get('/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
     console.log("facebook", req.user)  
-    res.render('profile.pug')
+    res.redirect('/profile');
   });
 
 

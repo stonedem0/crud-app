@@ -39,14 +39,17 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
     clientID: keys.facebookAppID,
     clientSecret: keys.facebookAppSecret,
-    callbackURL: '/auth/facebook/callback'
-}, async(accessToken, refreshToken, profile, cb) => {
+    callbackURL: '/auth/facebook/callback',
+    profileFields:['id','displayName','emails']
+}, async(accessToken, refreshToken, profile, done) => {
+    console.log(profile)
     try {
-        const existingUser = await User.findOne({facebookId: profile.id});
+        const existingUser = await User.findOne({});
         if (existingUser) {
             return done(null, existingUser);
         }
-        const user = await new User({facebookId: profile.id}).save();
+        const user = await new User({email:profile.emails[0].value,
+			name:profile.displayName}).save();
         done(null, user);
     } catch (err) {
         done(err, null);
