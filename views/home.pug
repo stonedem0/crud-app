@@ -1,17 +1,14 @@
 doctype html  
 html(lang='en')  
  head
+   style
+     include style.css
    title Home
+   link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous")
  body
-   h1 No place like this one
-   div.container
-     p Cool home page!
-     a(href='/auth/login') Login
-     p
-     a(href='/auth/logout') Logout
-     p
-     a(href='/auth/google') Google+
-     p
-     a(href='/auth/facebook') Facebook
-     p
-     a(href='/auth/github') Github
+ div.container
+ p no place like this one 
+     div.container
+      a(href='/auth/google'):  i(class='fab fa-github-square fa-3x')
+      a(href='/auth/facebook'): i(class='fab fa-facebook-square fa-3x')
+      a(href='/auth/github'): i(class='fab fa-google-plus-square fa-3x')
