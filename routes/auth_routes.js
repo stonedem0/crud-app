@@ -20,10 +20,11 @@ router.get('/logout', (req, res) => {
     res.send('logging out');
 })
 
-router.get('/google/callback', passport.authenticate('google'), (req, res) =>{ 
-    res.render('profile.pug',{user: req.user.displayName} )
+router.get('/google/redirect', passport.authenticate('google'), (req, res) =>{ 
+    res.redirect('/profile');
 })
 
+// console.trace("here i am")
 
 router.get('/facebook',
   passport.authenticate('facebook'));

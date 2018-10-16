@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth_routes');
 const passportSetup = require('./config/passport');
 const passport = require('passport');
 
+
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI, {useNewUrlParser: true});
 
@@ -21,6 +22,7 @@ const app = express();
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'));
 
+app.use(bodyParser.json());
 app.use(cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
     keys: [keys.cookieKey]
@@ -36,7 +38,7 @@ app.get('/', async(req, res) => {
 })
 
 app.get('/profile', async(req, res) => {
-    res.render('profile.pug')
+    res.render('profile.pug', {user: req.user.displayName})
 })
 
 
