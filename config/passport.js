@@ -19,15 +19,15 @@ passport.deserializeUser((id, done) => {
         });
 });
 
-// Google strategy
-//--------------->
+// Google strategy --------------->
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL
 }, async(accessToken, refreshToken, profile, done) => {
+    console.log(profile)
     try {
-        const existingUser = await User.findOne({googleId: profile.id});
+        const existingUser = await User.findOne({ googleId: profile.id });
         if (existingUser) {
             return done(null, existingUser);
         }
@@ -38,23 +38,21 @@ passport.use(new GoogleStrategy({
     }
 }))
 
-
-//Facebook strategy 
-//---------------->
+//Facebook strategy ---------------->
 
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: process.env.FACEBOOK_CALLBACK_URL,
-    profileFields:['id','displayName','emails']
+    profileFields: ['id', 'displayName', 'emails']
 }, async(accessToken, refreshToken, profile, done) => {
     console.log(profile)
     try {
-        const existingUser = await User.findOne({email:profile.emails[0].value});
+        const existingUser = await User.findOne({id: profile.id});
         if (existingUser) {
             return done(null, existingUser);
         }
-        const user = await new User({email:profile.emails[0].value,name:profile.displayName}).save();        
+        const user = await new User({id: profile.id, name: profile.displayName}).save();
         done(null, user);
         console.log(`db ${user}`)
     } catch (err) {
@@ -62,5 +60,5 @@ passport.use(new FacebookStrategy({
     }
 }));
 
-//Gitub strategy 
-//------------->
+//Gitub strategy ------------->
+
