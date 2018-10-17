@@ -25,7 +25,8 @@ const app = express();
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 app.use(cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
     keys: [process.env.COOKIE_KEY]
@@ -34,6 +35,8 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+require('./routes/post_routes')(app);
 app.use('/auth', authRoutes);
 
 app.get('/', async(req, res) => {

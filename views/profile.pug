@@ -1,9 +1,18 @@
 doctype html  
 html(lang='en')  
  head
+   style
+     include style/profile.css 
    title Profile
  body
-   h1 You stuff is here
+   div.header 
+     h1= user 
+     button Log out
    div.container
-     p= user
-     a(href='/auth/logout') log out
+   form(method="POST" action="/post")
+     div.form-group
+       input#title.form-control(type="text", placeholder="title" name="title")
+     div.form-group
+       textarea#content.form-control(type="text", placeholder="your post is here" name="content" cols="100", rows="10")
+     button(type='submit') Post it!
+      
