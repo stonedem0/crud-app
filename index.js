@@ -3,13 +3,15 @@ const mongoose = require('mongoose');
 const path = require('path')
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
-// const keys = require('./config/keys');
-const authRoutes = require('./routes/auth_routes');
+const authRoutes = require('./components/authentication/authRoutes');
 const passport = require('passport');
 
 require('dotenv').config()
 
-require('./config/passport');
+require('./components/authentication/passport');
+
+
+console.log("all env:", process.env.NODE_ENV)
 
 
 mongoose.Promise = global.Promise;
@@ -23,7 +25,7 @@ db.once('open', () => {
 
 const app = express();
 app.set('view engine', 'pug')
-app.set('views', path.join(__dirname, 'views'));
+// app.set('views', path.join(__dirname, 'views'));
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -36,19 +38,23 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-require('./routes/post_routes')(app);
+require('./components/post/postRoutes')(app);
 app.use('/auth', authRoutes);
 
 app.get('/', async(req, res) => {
-    res.render('home.pug')
+    console.log(req, res)
+    res.render(__dirname +'/components/home/home')
 })
 
 app.get('/profile', async(req, res) => {
     console.log(`render ${req.user}`)
-    res.render('profile.pug', {user: req.user.displayName})
+    res.render(__dirname +'/components/user/userProfile', {user: req.user.displayName})
 })
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Listening on port`, PORT);
 });
+
+
+module.exports = app

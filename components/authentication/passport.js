@@ -3,9 +3,9 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
 const mongoose = require('mongoose');
-// const keys = require('./keys')
 
-const User = require('../models/User')
+
+const User = require('../user/user')
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -47,7 +47,6 @@ passport.use(new FacebookStrategy({
     callbackURL: process.env.FACEBOOK_CALLBACK_URL,
     profileFields: ['id', 'displayName', 'emails']
 }, async(accessToken, refreshToken, profile, done) => {
-    console.log("facebook", profile)
     try {
         const existingUser = await User.findOne({user_id: profile.id});
         if (existingUser) {
@@ -67,7 +66,6 @@ passport.use(new GitHubStrategy({
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: process.env.GITHUB_CALLBACK_URL
 }, async(accessToken, refreshToken, profile, done) => {
-    console.log("facebook", profile)
     try {
         const existingUser = await User.findOne({user_id: profile.id});
         if (existingUser) {

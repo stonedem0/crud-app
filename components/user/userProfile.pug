@@ -2,12 +2,13 @@ doctype html
 html(lang='en')  
  head
    style
-     include style/profile.css 
+     include userProfile.css 
    title Profile
  body
    div.header 
      h1= user 
      button Log out
+     a(href='/posts') My posts
    div.container
    form(method="POST" action="/post")
      div.form-group

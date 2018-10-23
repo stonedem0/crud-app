@@ -21,18 +21,18 @@ router.get('/logout', (req, res) => {
   });
 
 router.get('/google/redirect', passport.authenticate('google'), (req, res) =>{ 
+
     res.redirect('/profile');
 })
 
-// console.trace("here i am")
+
 
 router.get('/facebook',
-  passport.authenticate('facebook', {scope:"email"}));
+  passport.authenticate('facebook', {scope:'email'}));
 
 router.get('/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
-    // console.log("facebook", req.user)  
     res.redirect('/profile');
   });
 
@@ -46,6 +46,10 @@ router.get('/github/callback',
     // Successful authentication, redirect home.
     res.redirect('/profile');
   });
+
+
+  // mock router 
+
 
 
 module.exports = router;
