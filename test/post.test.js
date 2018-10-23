@@ -7,7 +7,7 @@ const should = chai.should();
 
 process.env.NODE_ENV = 'test';
 
-describe('POST /protected-resource authorized', function () {
+describe('POST and GET /protected-resource authorized', function () {
     beforeEach(function (done) {
         passportMock(app, {
             passAuthentication: true,
@@ -27,13 +27,19 @@ describe('POST /protected-resource authorized', function () {
             .set('Accept', /application\/json/)
             .expect(200)
             .end((err, req, res) => {
-                res 
-                
+                res
                     .body
                     .should
                     .be
                     .a('object');
             });
+        done();
+    });
+    it('should allow access to /protected-resource', function (done) {
+
+        request(app)
+            .get('/posts')
+            .expect(200)
         done();
     });
 });
