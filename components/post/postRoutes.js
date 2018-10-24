@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
-const requireLogin = require('../authentication/requireLogin');
 
+const requireLogin = require('../authentication/requireLogin');
 const Post = require('./post');
 
 module.exports = app => {
 
     app.get('/posts', requireLogin, async(req, res) => {
+   
+        
         const posts = await Post.find({user_id: req.user.id})
         res.send(posts);
+       
 
     });
     app.post('/post', requireLogin, async(req, res) => {
@@ -23,7 +26,7 @@ module.exports = app => {
                 res.send(400, err);
             }
         }
-        res.json({'error':'title and content cannot be empty'})
+        res.json({'error': 'title and content cannot be empty'})
 
     });
 }

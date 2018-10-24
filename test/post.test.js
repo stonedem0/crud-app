@@ -2,8 +2,8 @@ const app = require('../index')
 const chai = require('chai');
 const request = require('supertest');
 const passportMock = require('./passport-mock')
-const expect = chai.expect;
-const should = chai.should();
+// const expect = chai.expect;
+// const should = chai.should();
 
 process.env.NODE_ENV = 'test';
 

@@ -7,6 +7,7 @@ const authRoutes = require('./components/authentication/authRoutes');
 const passport = require('passport');
 
 require('dotenv').config()
+require('./components/post/postCache')
 
 require('./components/authentication/passport');
 
