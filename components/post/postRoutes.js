@@ -8,7 +8,7 @@ module.exports = app => {
     app.get('/posts', requireLogin, async(req, res) => {
    
         
-        const posts = await Post.find({user_id: req.user.id})
+        const posts = await Post.find({user_id: req.user.id}).cache();
         res.send(posts);
        
 
