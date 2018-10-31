@@ -16,26 +16,25 @@ mongoose.Query.prototype.cache = function (options = {}) {
 
 }
 
-mongoose.Query.prototype.exec = async function () {
-    if (!this._cache) {
-        exec.apply(this, arguments)
-    }
+// mongoose.Query.prototype.exec = async function () {
+//     if (!this._cache) {
+//         exec.apply(this, arguments)
+//     }
 
-    const key = JSON.stringify(Object.assign({}, this.getQuery(), {collection: this.mongooseCollection.name}))
+//     const key = JSON.stringify(Object.assign({}, this.getQuery(), {collection: this.mongooseCollection.name}))
 
-    const cacheValue = await client.hget(this._hashKey, key);
+//     const cacheValue = await client.hget(this._hashKey, key);
 
-    if (cacheValue) {
-        const doc = JSON.parse(cacheValue)
-        console.log(doc)
+//     if (cacheValue) {
+//         const doc = JSON.parse(cacheValue)
+//         console.log(doc)
+//         return Array.isArray(doc)
+//             ? doc.map(d => new this.model(d))
+//             : new this.model(doc)
+//     }
 
-        return Array.isArray(doc)
-            ? doc.map(d => new this.model(d))
-            : new this.model(doc)
-    }
+//     const result = await exec.apply(this, arguments);
 
-    const result = await exec.apply(this, arguments);
-
-    client.hset(this._hashKey, key, JSON.stringify(result), 'EX', 10)
-    return result;
-}
+//     client.hset(this._hashKey, key, JSON.stringify(result), 'EX', 10)
+//     return result;
+// }

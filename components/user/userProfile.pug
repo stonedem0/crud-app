@@ -7,7 +7,7 @@ html(lang='en')
  body
    div.header 
      h1= user 
-     button Log out
+     a(href='/auth/logout') Log out
      a(href='/posts') My posts
    div.container
    form(method='POST' action='/post')

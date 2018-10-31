@@ -1,0 +1,20 @@
+doctype html  
+html(lang='en')  
+ head
+   styl
+   title Profile
+ body
+   div.container
+   
+   form(action=`/posts/${post._id}?_method=PUT` method="post")
+    //- input(type="hidden" name="_method" value="PUT")
+    div.form-group
+     input#title.form-control(type='text', placeholder='title' name='title' value=post.title)
+     div.form-group
+     textarea#content.form-control(type='text', placeholder=post.content name='content' cols='100', rows='10')= post.content 
+    
+     div
+     button(type='submit') Post it!
+     
+       
+       

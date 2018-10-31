@@ -5,15 +5,12 @@ const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const authRoutes = require('./components/authentication/authRoutes');
 const passport = require('passport');
+const methodOverride = require('method-override')
 
 require('dotenv').config()
 require('./components/post/postCache')
 
 require('./components/authentication/passport');
-
-
-console.log("all env:", process.env.NODE_ENV)
-
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true});
@@ -35,6 +32,8 @@ app.use(cookieSession({
     keys: [process.env.COOKIE_KEY]
 }));
 
+app.use(methodOverride('_method'));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -43,7 +42,6 @@ require('./components/post/postRoutes')(app);
 app.use('/auth', authRoutes);
 
 app.get('/', async(req, res) => {
-    console.log(req, res)
     res.render(__dirname +'/components/home/home')
 })
 

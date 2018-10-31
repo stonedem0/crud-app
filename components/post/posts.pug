@@ -1,7 +1,14 @@
 doctype html  
 html(lang='en')  
   head
+    style
+     include posts.css 
     title Posts
   body
-    p= title
-    p= content
+   each el in posts 
+    a(href=`/posts/${el._id}`): h2= el.title 
+    p= el.content
+    a(href=`/posts/edit/post/${el._id}`): button edit
+    form(action=`/posts/${el._id}?_method=DELETE` method='post'): button delete
+
+    
