@@ -7,12 +7,12 @@ module.exports = app => {
 
     //handling GETs requests
 
-    app.get('/posts', requireLogin, async(req, res) => {
+    app.get('/profile', requireLogin, async(req, res) => {
 
         const posts = await Post.find({user_id: req.user.id})
         // posts.map( (post, index) => {     console.log(index, " : ", post.content) })
         console.log('posts: ', posts)
-        res.render(__dirname + '/posts.pug', {posts: posts});
+        res.render(__dirname + '/postProfile.pug', {posts: posts, user: req.user.displayName});
 
     });
 
@@ -28,9 +28,13 @@ module.exports = app => {
     app.get('/posts/edit/post/:id', requireLogin, async(req, res) => {
         const id = req.params.id
         const post = await Post.findById(id)
-        res.render(__dirname + '/editPost.pug', {post: post})
+        res.render(__dirname + '/postEdit.pug', {post: post})
 
         // res.render(__dirname + '/editPost.pug')
+    })
+
+    app.get('/post/create', requireLogin, (req, res) => {
+        res.render(__dirname + '/postCreate.pug')
     })
 
     //handling POST requests
@@ -42,7 +46,7 @@ module.exports = app => {
 
             try {
                 await post.save();
-                res.redirect('/posts')
+                res.redirect('/profile')
 
             } catch (err) {
                 res.send(400, err);

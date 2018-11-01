@@ -1,0 +1,95 @@
+@import url( 'https://fonts.googleapis.com/css?family=Lato');
+@import url( 'https://fonts.googleapis.com/css?family=Cabi');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+
+body {
+    color: #f04265;
+    background: #090909;
+    font-family: 'Poppins', sans-serif;;
+    text-align: justify;
+}
+
+.post-container {
+    margin: 70px;
+}
+.delete-button {
+    color: #f04265;
+    background: #090909;
+    border-color: #090909;
+}
+
+.button-panel {
+    float: right;
+}
+
+.new-post {
+    margin: 50px;
+    float: right;
+}
+
+.header {
+    margin-right: 70px;
+    text-align: right;
+}
+
+.header h1 {
+      font-weight: 400;
+      color: #DD828F;
+      opacity: 0.5;
+}
+.header a {
+  color: #333333;
+}
+p {
+    color: #333333;
+}
+
+form {
+    display: inline;
+}
+a {
+    color: #f04265;
+    text-decoration: none;
+}
+a:visited {
+    color: #f04265;
+}
+@keyframes cool-underline {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+
+}
+.post-title a {
+    display: block;
+    text-decoration: none;
+    width: max-content;
+    position: relative;
+    transition: all 0.15s ease-out;
+}
+.post-title a:before {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #f04265;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.2s cubic-bezier(1, 0.25, 0, 0.75) 0s;
+
+}
+.post-title a:hover:before {
+    display: block;
+    visibility: visible;
+    transform: scaleX(1);
+    animation: cool-underline 5s;
+    animation-iteration-count: 1;
+
+}
