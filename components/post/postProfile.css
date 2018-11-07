@@ -1,13 +1,21 @@
 @import url( 'https://fonts.googleapis.com/css?family=Lato');
 @import url( 'https://fonts.googleapis.com/css?family=Cabi');
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
-@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+@import url( 'https://fonts.googleapis.com/css?family=Montserrat');
+@import url( 'https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 
 body {
     color: #f04265;
     background: #090909;
-    font-family: 'Poppins', sans-serif;;
+    font-family: 'Poppins', sans-serif;
     text-align: justify;
+}
+
+.post-image {
+    margin: 10px 1px 0px 25px;
+    opacity: 0.5;
+    float: right;
+    width: 250px;
+    height: 250px;
 }
 
 .post-container {
@@ -34,13 +42,57 @@ body {
 }
 
 .header h1 {
-      font-weight: 400;
-      color: #DD828F;
-      opacity: 0.5;
+    font-weight: 400;
+    color: #DD828F;
+    opacity: 0.5;
 }
 .header a {
-  color: #333333;
+    color: #333333;
 }
+
+.create-post-container,
+.edit-post-container {
+    margin: 30px;
+    color: #090909;
+}
+
+.post-button {
+    margin-top: 20px;
+}
+
+.post-button button {
+    margin: 10px;
+}
+
+.cancel-button {
+    margin: 40px;
+}
+.cancel-button a:visited {
+    color: #333333;
+
+}
+
+input,
+textarea {
+    font-size: 20px;
+    color: #333333;
+    border-style: solid;
+    background: #090909;
+    border-color: #090909;
+    outline: none;
+    resize: none;
+
+}
+
+.post-button {
+    height: 35px;
+    width: 120px;
+    font-size: 18px;
+    color: #DD828F;
+    border-color: #DD828F;
+    background-color: #090909;
+}
+
 p {
     color: #333333;
 }
@@ -92,4 +144,27 @@ a:visited {
     animation: cool-underline 5s;
     animation-iteration-count: 1;
 
+}
+
+input {
+    position: relative;
+    transition: all 0.15s ease-out;
+}
+.form-group:after {
+    background-color: #DD828F;
+    opacity: 0.5;
+    display: block;
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 1px;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.2s cubic-bezier(1, 0.25, 0, 0.75) 0s;
+}
+.form-group:hover:after {
+    display: block;
+    visibility: visible;
+    transform: scaleX(1);
+    animation: cool-unde;
 }

@@ -7,6 +7,7 @@ const authRoutes = require('./components/authentication/authRoutes');
 const passport = require('passport');
 const methodOverride = require('method-override')
 
+
 require('dotenv').config()
 require('./components/post/postCache')
 
@@ -39,9 +40,13 @@ app.use(passport.session());
 
 
 require('./components/post/postRoutes')(app);
+require('./components/post/postUploadImage')(app);
 app.use('/auth', authRoutes);
 
 app.get('/', async(req, res) => {
+    if(req.user) {
+        res.redirect('/profile')
+    }
     res.render(__dirname +'/components/home/home')
 })
 

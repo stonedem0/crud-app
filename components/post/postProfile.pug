@@ -14,12 +14,12 @@ html(lang='en')
      div.post-title
        a.post-link(href=`/posts/${el._id}`): h2= el.title
      div.post-text
+      img.post-image(src=`https://s3.eu-west-2.amazonaws.com/emo-blog-platform/${el.user_image}`)
       p= el.content
       div.button-panel
        a(href=`/posts/edit/post/${el._id}`): i(class='fas fa-edit')
-        form(action=`/posts/${el._id}?_method=DELETE` method='post'): button.delete-button 
+       form(action=`/posts/${el._id}?_method=DELETE` method='post'): button.delete-button 
         i(class='fas fa-trash')
    div.new-post
     a(href='/post/create'):  i(class='fas fa-plus-square fa-2x')
 
-    
