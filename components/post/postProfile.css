@@ -4,52 +4,72 @@
 @import url( 'https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 
 body {
-    color: #f04265;
+    color: #ff5d7d;
     background: #090909;
     font-family: 'Poppins', sans-serif;
     text-align: justify;
 }
 
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
 .post-image {
-    margin: 10px 1px 0px 25px;
-    opacity: 0.5;
+    margin: 9px 4px 0 24px;
+    opacity: 0.8;
     float: right;
     width: 250px;
     height: 250px;
+    transition: 0.2s ease-in-out 0s;
+}
+.post-image:hover {
+    opacity: 1;
+    transition: 0.2s ease-in-out 0s;
+
 }
 
 .post-container {
     margin: 70px;
 }
 .delete-button {
-    color: #f04265;
+    font-size: 15px;
+    color: #ff5d7d;
     background: #090909;
     border-color: #090909;
 }
 
-.button-panel {
-    float: right;
-}
-
 .new-post {
-    margin: 50px;
+    float: right;
+    margin: 70px;
+
+}
+.button-panel {
+
     float: right;
 }
 
 .header {
-    margin-right: 70px;
+    margin-right: 75px;
     text-align: right;
 }
 
 .header h1 {
-    font-weight: 400;
-    color: #DD828F;
-    opacity: 0.5;
+    color: #333333;
+
 }
 .header a {
     color: #333333;
 }
-
+.header a:visited {
+    color: #333333;
+}
 .create-post-container,
 .edit-post-container {
     margin: 30px;
@@ -88,8 +108,8 @@ textarea {
     height: 35px;
     width: 120px;
     font-size: 18px;
-    color: #DD828F;
-    border-color: #DD828F;
+    color: #ff5d7d;
+    border-color: #ff5d7d;
     background-color: #090909;
 }
 
@@ -101,11 +121,11 @@ form {
     display: inline;
 }
 a {
-    color: #f04265;
+    color: #ff5d7d;
     text-decoration: none;
 }
 a:visited {
-    color: #f04265;
+    color: #ff5d7d;
 }
 @keyframes cool-underline {
     0% {
@@ -131,7 +151,7 @@ a:visited {
     height: 1px;
     bottom: 0;
     left: 0;
-    background-color: #f04265;
+    background-color: #ff5d7d;
     visibility: hidden;
     transform: scaleX(0);
     transition: all 0.2s cubic-bezier(1, 0.25, 0, 0.75) 0s;
@@ -151,7 +171,7 @@ input {
     transition: all 0.15s ease-out;
 }
 .form-group:after {
-    background-color: #DD828F;
+    background-color: #ff5d7d;
     opacity: 0.5;
     display: block;
     content: '';
@@ -166,5 +186,4 @@ input {
     display: block;
     visibility: visible;
     transform: scaleX(1);
-    animation: cool-unde;
 }

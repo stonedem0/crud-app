@@ -11,7 +11,8 @@ html(lang='en')
         input#title.form-control(type='text', placeholder='title' name='title')
       div.form-group
         textarea#content.form-control(type='text', placeholder='your post is here' name='content' cols='100', rows='10')  
-        input#user-image.form-control(type='file', accept='image/*', name='user-image')
+        label.custom-file-upload
+         input#user-image.form-control(type='file', accept='image/*', name='user-image')
       button.post-button(type='submit') Post it!
     //- form(method='POST', action='/upload')  
      button.post-button(type='submit') upload
