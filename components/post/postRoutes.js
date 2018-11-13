@@ -63,11 +63,11 @@ module.exports = app => {
             return
         }
 
-        const post = new Post({
+        const post = {
             title: title,
             content: content,
             user_id: req.user.id
-        });
+        } 
 
         console.log('Creating post')
 
@@ -75,7 +75,8 @@ module.exports = app => {
         if (req.file) {
           try {
             console.log('Uploading file to %s', key)
-            await uploadFile(req, key)  
+            await uploadFile(req, key)
+            post.user_image = key
           } catch (err) {
             console.error('Error uploading: %s', err)
             res.send(400, err)
@@ -83,10 +84,13 @@ module.exports = app => {
           }
         } 
         console.log('Uploaded file')
+
+        // post model
+        const model = new Post(post);
             
         // has no file
         try {
-            await post.save();
+            await model.save();
             res.redirect('/profile')
         } catch (err) {
             console.error('Error saving post: %s', err)
