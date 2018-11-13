@@ -14,8 +14,11 @@ html(lang='en')
      div.post-title
        a.post-link(href=`/posts/${el._id}`): h2= el.title
      div.post-text
-      img.post-image(src=`https://s3.eu-west-2.amazonaws.com/emo-blog-platform/${el.user_image}`)
-      p= el.content
+      if el.user_image
+       img.post-image(src=`https://s3.eu-west-2.amazonaws.com/emo-blog-platform/${el.user_image}`)
+       p= el.content
+      else  
+        p= el.content
       div.button-panel
        a(href=`/posts/edit/post/${el._id}`): i(class='fas fa-edit')
        form(action=`/posts/${el._id}?_method=DELETE` method='post'): button.delete-button 

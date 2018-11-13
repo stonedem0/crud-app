@@ -1,38 +1,23 @@
 const mongoose = require('mongoose');
 
-const request = require('request');
-
 const AWS = require('aws-sdk');
 const uuid = require('uuid/v1');
 
 const multer = require('multer')
 const storage = multer.memoryStorage()
-const upload = multer({storage:storage });
+const upload = multer({storage: storage});
 const requireLogin = require('../authentication/requireLogin');
 const Post = require('./post');
 
-const s3 = new AWS.S3({accessKeyId: process.env.AWS_ACCSSES_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCSEES_KEY, endpoint: 's3.eu-west-2.amazonaws.com', signatureVersion: 'v4', region:'eu-west-2'})
+const s3 = new AWS.S3({accessKeyId: process.env.AWS_ACCSSES_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCSEES_KEY, endpoint: 's3.eu-west-2.amazonaws.com', signatureVersion: 'v4', region: 'eu-west-2'})
 
 module.exports = app => {
-
-    // app.get('/upload', requireLogin, (req, res) => {
-    //     const key = `${req.user.id}/${uuid()}.jpeg`
-    //     s3.getSignedUrl('putObject', {
-    //         Bucket: 'emo-blog-platform',
-    //         ContentType: 'image/jpeg',
-    //         Key: key
-    //     }, (err, url) => {
-    //         res.send({key, url})
-    //     })
-    // });
 
     //handling GETs requests
 
     app.get('/profile', requireLogin, async(req, res) => {
 
         const posts = await Post.find({user_id: req.user.id})
-        // posts.map( (post, index) => {     console.log(index, " : ", post.content) })
-
         res.render(__dirname + '/postProfile.pug', {
             posts: posts,
             user: req.user.displayName
@@ -64,49 +49,68 @@ module.exports = app => {
     //handling POST requests
 
     app.post('/post', requireLogin, upload.single('user-image'), async(req, res) => {
-        console.log('file: ', req.file)
         const key = `${req.user.id}/${uuid()}.jpeg`
-        if(req.file){
-            s3.putObject( {
-                Bucket: 'emo-blog-platform',
-                Body: req.file.buffer,
-                ContentType: req.file.mimetype,
-                Key: key,
-                ACL: 'public-read'
-            }, (err,data) => {
-                console.log(key, data)
-            })}
+    
         const {title, content} = req.body;
-        if (title && content) {
-            const post = new Post({title: title, content: content, user_image: key, user_id: req.user.id});
 
-            try {
-                await post.save();
-                res.redirect('/profile')
-
-            } catch (err) {
-                res.send(400, err);
-            }
+        if (!title) {
+            res.json({ error: 'Title is required' })
+            return
         }
-        res.json({'error': 'title and content cannot be empty'})
         
+        if (!content) {
+            res.json({ error: 'Content is required' })
+            return
+        }
+
+        const post = new Post({
+            title: title,
+            content: content,
+            user_id: req.user.id
+        });
+
+        console.log('Creating post')
+
+        // has a file
+        if (req.file) {
+          try {
+            console.log('Uploading file to %s', key)
+            await uploadFile(req, key)  
+          } catch (err) {
+            console.error('Error uploading: %s', err)
+            res.send(400, err)
+            return
+          }
+        } 
+        console.log('Uploaded file')
+            
+        // has no file
+        try {
+            await post.save();
+            res.redirect('/profile')
+        } catch (err) {
+            console.error('Error saving post: %s', err)
+            res.send(400, err);
+        }
+
+        console.log('Created post')
     });
-    
-      app.post('/upload', requireLogin, upload.single('avatar'), function (req, res, next) {
-            console.log(req.file, req.file.mimetype )
-            const key = `${req.user.id}/${uuid()}.jpeg`
-            s3.putObject( {
-                Bucket: 'emo-blog-platform',
-                Body: req.file.buffer,
-                ContentType: req.file.mimetype,
-                Key: key,
-                ACL: 'public-read'
-            }, (err,data) => {
-                console.log(key, data)
-                res.render(__dirname + '/postCreate.pug', {key:key})
-            })
+
+    app.post('/upload', requireLogin, upload.single('avatar'), function (req, res, next) {
+        console.log(req.file, req.file.mimetype)
+        const key = `${req.user.id}/${uuid()}.jpeg`
+        s3.putObject({
+            Bucket: 'emo-blog-platform',
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype,
+            Key: key,
+            ACL: 'public-read'
+        }, (err, data) => {
+            console.log(key, data)
+            res.render(__dirname + '/postCreate.pug', {key: key})
         })
-    
+    })
+
     //handling PUT requeset
 
     app.put('/posts/:id', requireLogin, async(req, res) => {
@@ -127,7 +131,7 @@ module.exports = app => {
         let id = req.params.id
         try {
             await Post.findByIdAndRemove(id)
-            res.send('Post successfully deleted');
+            res.redirect('/profile');
         } catch (err) {
 
             res.send(err);
@@ -135,4 +139,15 @@ module.exports = app => {
         }
     });
 
+}
+
+// Upload the request body to the given key.
+function uploadFile(req, key) {
+    return s3.putObject({
+        Bucket: 'emo-blog-platform',
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
+        Key: key,
+        ACL: 'public-read'
+    }).promise()
 }

@@ -14,14 +14,7 @@ html(lang='en')
         label.custom-file-upload Choose image
          input#user-image.form-control(type='file', accept='image/*', name='user-image')
       button.custom-button(type='submit') Post it!
-    //- form(method='POST', action='/upload')  
-     button.post-button(type='submit') upload
 
-   script.
-    let image = document.getElementById('user-image')
-    console.log(image)
-    image.addEventListener('click', (e) => console.log(e.target.files))
-     
 
       
        
