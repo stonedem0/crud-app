@@ -1,0 +1,30 @@
+body {
+    color: #ff5d7d;
+    background: #090909;
+    font-family: 'Poppins', sans-serif;
+    text-align: justify;
+}
+
+a {
+    color: #ff5d7d;
+
+    padding: 10px;
+}
+a:visited {
+    color: #ff5d7d;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+
+}
+
+p {
+    color: #ff5d7d;
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+ 
+}

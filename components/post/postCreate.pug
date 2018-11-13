@@ -1,0 +1,20 @@
+doctype html  
+html(lang='en')  
+ head
+   style
+     include postProfile.css
+   title Profile
+ body
+   div.create-post-container
+    form(method='POST' action='/post', enctype='multipart/form-data')
+      div.form-group
+        input#title.form-control(type='text', placeholder='title' name='title')
+      div.form-group
+        textarea#content.form-control(type='text', placeholder='your post is here' name='content' cols='100', rows='10')  
+        label.custom-file-upload Choose image
+         input#user-image.form-control(type='file', accept='image/*', name='user-image')
+      button.custom-button(type='submit') Post it!
+
+
+      
+       

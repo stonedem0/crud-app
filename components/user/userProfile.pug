@@ -1,0 +1,21 @@
+doctype html  
+html(lang='en')  
+ head
+   style
+     include userProfile.css 
+   title Profile
+ body
+   div.header 
+     h1= user 
+     a(href='/auth/logout') Log out
+     a(href='/posts') My posts
+   div.container
+   form(method='POST' action='/post')
+     div.form-group
+       input#title.form-control(type='text', placeholder='title' name='title')
+     div.form-group
+       textarea#content.form-control(type='text', placeholder='your post is here' name='content' cols='100', rows='10')
+     button(type='submit') Post it!
+     div.form-group
+       input(type='file', accept='image/*')
+       

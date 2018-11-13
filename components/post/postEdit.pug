@@ -1,0 +1,22 @@
+doctype html  
+html(lang='en')  
+ head
+   style
+    include postProfile.css 
+   title Profile
+ body
+  div.edit-container 
+   div.edit-post-container
+    form(action=`/posts/${post._id}?_method=PUT` method="post")
+     div.form-group
+      input#title.form-control(type='text', placeholder='title' name='title' value=post.title)
+     div.form-group
+      textarea#content.form-control(type='text', placeholder=post.content name='content' cols='100', rows='10')= post.content 
+     div.post-button 
+      button.custom-button(type='submit') Post it!
+   div.cancel-button
+    a(href='/profile') Back to profile 
+     
+     
+       
+       
