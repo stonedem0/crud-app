@@ -46,6 +46,7 @@ app.use('/auth', authRoutes);
 app.get('/', async(req, res) => {
     if(req.user) {
         res.redirect('/profile')
+        return
     }
     res.render(__dirname +'/components/home/home')
 })
