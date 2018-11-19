@@ -9,6 +9,8 @@ const upload = multer({storage: storage});
 const requireLogin = require('../authentication/requireLogin');
 const Post = require('./post');
 
+const postsCached = require('./postCached')
+
 const s3 = new AWS.S3({accessKeyId: process.env.AWS_ACCSSES_KEY_ID, secretAccessKey: process.env.AWS_SECRET_ACCSEES_KEY, endpoint: 's3.eu-west-2.amazonaws.com', signatureVersion: 'v4', region: 'eu-west-2'})
 
 module.exports = app => {
@@ -17,7 +19,8 @@ module.exports = app => {
 
     app.get('/profile', requireLogin, async(req, res) => {
 
-        const posts = await Post.find({user_id: req.user.id})
+        const user_id = req.user.id
+        const posts = await postsCached.find({ user_id })
         res.render(__dirname + '/postProfile.pug', {
             posts: posts,
             user: req.user.displayName
@@ -50,16 +53,18 @@ module.exports = app => {
 
     app.post('/post', requireLogin, upload.single('user-image'), async(req, res) => {
         const key = `${req.user.id}/${uuid()}.jpeg`
-    
+
+
         const {title, content} = req.body;
 
+        // Validate input
         if (!title) {
-            res.json({ error: 'Title is required' })
+            res.json({error: 'Title is required'})
             return
         }
-        
+
         if (!content) {
-            res.json({ error: 'Content is required' })
+            res.json({error: 'Content is required'})
             return
         }
 
@@ -69,28 +74,30 @@ module.exports = app => {
             user_id: req.user.id
         } 
 
+
         console.log('Creating post')
 
         // has a file
         if (req.file) {
-          try {
-            console.log('Uploading file to %s', key)
-            await uploadFile(req, key)
-            post.user_image = key
-          } catch (err) {
-            console.error('Error uploading: %s', err)
-            res.send(400, err)
-            return
-          }
-        } 
+            try {
+                console.log('Uploading file to %s', key)
+                await uploadFile(req, key)
+                post.user_image = key
+            } catch (err) {
+                console.error('Error uploading: %s', err)
+                res.send(400, err)
+                return
+            }
+        }
+
         console.log('Uploaded file')
 
         // post model
         const model = new Post(post);
-            
+
         // has no file
         try {
-            await model.save();
+            await postsCached.save(model)
             res.redirect('/profile')
         } catch (err) {
             console.error('Error saving post: %s', err)

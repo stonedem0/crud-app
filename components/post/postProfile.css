@@ -43,6 +43,13 @@ input[type="file"] {
 .post-container {
     margin: 70px;
 }
+
+
+.post-container p {
+   height: 250px;
+   overflow: auto;
+}
+
 .delete-button {
     font-size: 15px;
     color: #ff5d7d;
